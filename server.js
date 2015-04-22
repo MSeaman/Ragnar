@@ -14,8 +14,8 @@ var app = express();
 app.use( logger('dev') );
 app.use( bodyParser.urlencoded({ extended: false }) );
 app.use( bodyParser.json() );
-app.use( express.static( path.join( application_root, 'public' )));
-app.use( express.static( path.join( application_root, 'browser' )));
+app.use( express.static('./public' ));
+// app.use( express.static( path.join( application_root, 'browser' )));
 
 app.use(session({
   secret: 'gamesecret',
@@ -62,4 +62,61 @@ app.delete('/sessions', function(req, res) {
 
 app.get('/current_user', function(req, res) {
   if (req.session.currentUser) res.send(req.session.currentUser)
+});
+
+app.post('/users', function(req, res) {
+  bcrypt.hash(req.body.password, 10, function(err, hash) {
+    User
+      .create({
+        username: req.body.username,
+        password_digest: hash,
+        high_score: req.body.high_score
+      })
+      .then(function(user) {
+        res.send(user)
+      });
+  });
+});
+
+app.get('/users/:id', restrictAccess, function(req, res) {
+  User
+    .findOne(req.params.id)
+    .then(function(user) {
+      res.send(user);
+    });
+});
+
+app.put('/users/:id', restrictAccess, function(req, res) {
+  bcrypt.hash(req.body.password, 10, function(err, hash) {
+    User
+      .findOne(req.params.id)
+      .then(function(user) {
+        user
+          .update({
+            username: req.body.username,
+            password_digest: hash,
+            high_score: req.body.high_score
+          })
+          .then(function(updatedUser) {
+            res.send(updatedUser);
+          });
+      })
+  });
+});
+
+app.delete('/users/:id', restrictAccess, function(req, res) {
+  User
+    .findOne(req.params.id)
+    .then(function(user) {
+      user
+        .destroy()
+        .then(function() {
+          delete req.session.currentUser;
+          res.send(user);
+        });
+    });
+});
+
+app.listen(3000, function() {
+  console.log('Server listening on 3000...');
 });

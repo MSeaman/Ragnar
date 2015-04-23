@@ -14,15 +14,16 @@
     "chai": "^2.2.0",
     "express": "^4.12.3",
     "express-session": "^1.11.1",
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.6.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-open": "~0.2.3",
     "mocha": "^2.2.4",
     "morgan": "^1.5.2",
     "pg": "^4.3.0",
     "pg-hstore": "^2.3.2",
-    "grunt-open": "~0.2.3",
-    "grunt": "~0.4.2",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-connect": "~0.6.0",
-    "sequelize": "^2.0.6"
+    "sequelize": "^2.0.6",
+    "sequelize-cli": "^1.7.0"
   }
 }

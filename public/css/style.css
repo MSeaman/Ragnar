@@ -1,0 +1,23 @@
+body {
+  background: url(http://mysticwallpapers10.net/wp-content/uploads/images/31/dwarf.jpg);
+  background-size: cover;
+}
+
+canvas {
+
+  margin-left: 15%;
+  margin-top: 10%;
+}
+
+h1{ 
+  font-size: 40px;
+  text-align: center;
+  margin-top: 1%;
+  color: red;
+  font-family: viking;
+}
+
+p {
+  color:red;
+  font-size: 20px;
+}

@@ -70,7 +70,7 @@ app.post('/users', function(req, res) {
       .create({
         username: req.body.username,
         password_digest: hash,
-        high_score: req.body.high_score
+        high_score: 0
       })
       .then(function(user) {
         res.send(user)
@@ -86,22 +86,19 @@ app.get('/users/:id', restrictAccess, function(req, res) {
     });
 });
 
-app.put('/users/:id', restrictAccess, function(req, res) {
-  bcrypt.hash(req.body.password, 10, function(err, hash) {
+app.put('/users/:id', function(req, res) {
     User
       .findOne(req.params.id)
       .then(function(user) {
         user
           .update({
-            username: req.body.username,
-            password_digest: hash,
             high_score: req.body.high_score
           })
           .then(function(updatedUser) {
             res.send(updatedUser);
           });
       })
-  });
+  
 });
 
 app.delete('/users/:id', restrictAccess, function(req, res) {

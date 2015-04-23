@@ -3,12 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
   <script src='phaser.min.js'></script>
   <script src='phaser.js'></script>
   <script src='app.js'></script>
+  <script src='main_menu.js'></script>
   <script src="//cdn.jsdelivr.net/phaser/2.3.0/phaser.js"></script>
-  <!-- <link rel="stylesheet" href="/css/style.css"> -->
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  <div id='container'>
+    <header>
 
+<h1>Ragnar the Dwarf</h1>
+    </header>
+
+    <div id='user-access'></div>
+    <div id='user-accounts'></div>
+
+    <button id="start">Start Game</button>
+    <template id="create-user-template">
+      <input type="text" id="create-username" placeholder="username">
+      <input type="password" id="create-password" placeholder="password">
+      <button id="create-button">Sign Up</button>
+    </template>
+
+
+    <template id="login-template">
+      <input type="text" id="login-username" placeholder="username">
+      <input type="password" id="login-password" placeholder="password">
+      <button id="login-button">Log In</button>
+    </template>
+
+    <template id="user-template">
+        <p id="current-user" data-userId={{id}} data-username={{username}} data-highscore{{high_score}}>    {{username}} <br>
+         Highescore: {{high_score}}</p>
+        <button id="logout-button">Logout</button>
+        <button id="delete-button">Delete Profile</button>
+    </template>
+  </div>
 </body>
+
+
+
+

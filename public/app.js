@@ -1,22 +1,20 @@
-
+startGame = function() {
 console.log('loaded')
-var game = new Phaser.Game(1024, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1024, 500, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var map;
-
-
 
 function preload() {
 
     game.load.audio('lose', 'assets/lose.mp3')
     game.load.audio('win', 'assets/win.mp3')
+    game.load.audio('pickup', 'assets/Pickup_Gold.mp3')
     game.load.audio('background', 'assets/waterworks.ogg')
     game.load.audio('walking', 'assets/footsteps/Footstep_Dirt_00.mp3' )
-    game.load.audio('deathGrowl', 'assets/goblin_04.mp3')
+    game.load.audio('deathGrowl', 'assets/cut_grunt2.wav')
     game.load.audio('jump', 'assets/jump.mp3')
     game.load.audio('smash', 'assets/smash.mp3')
     game.load.image('jungle', 'assets/jungle_background.png', 1024, 600);
-    game.load.image('star', 'assets/star.png');
-    game.load.image('cannon', 'assets/cannon.png')
+    game.load.image('star', 'assets/diamond.png');
     game.load.image('fireball', 'assets/bullet.png', 5, 5);
     game.load.tilemap('level1', 'assets/game_background.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('gameTiles', 'assets/tiles_spritesheet.png')
@@ -27,6 +25,7 @@ function preload() {
 
 }
 
+var pickup;
 var knights;
 var knight;
 var player;
@@ -44,6 +43,7 @@ var jump;
 var smash;
 var boss;
 var win;
+var timeCheck;
 
 
 
@@ -62,10 +62,11 @@ function create() {
     collisionLayer.resizeWorld()
     
     // The player and its settings
-    player = game.add.sprite(32, game.world.height - 200, 'dude');
+    player = game.add.sprite(60, game.world.height - 200, 'dude');
 
     //  We need to enable physics on the player
     game.physics.arcade.enable(player);
+    player.enableBody = true;
     // game.camera.follow(player)
     player.body.setSize(60,50,0,0)
 
@@ -82,7 +83,7 @@ function create() {
     player.animations.add('attack', [111,112,113,114], 10, true);
     player.animations.add('death', [115,116], 10, false, true)
 
-    boss = game.add.sprite(500, 400, 'boss');
+    boss = game.add.sprite(3500, 400, 'boss');
     game.physics.arcade.enable(boss)
     boss.enableBody = true;
     boss.body.setSize(30,30,0,0)
@@ -100,6 +101,7 @@ function create() {
     smash = game.add.audio('smash')
     win = game.add.audio('win');
     growl = game.add.audio('deathGrowl')
+    timer = game.time.create(true);
 
 
 
@@ -212,7 +214,7 @@ function kill() {
     knights.forEach(function(knight) {
 
     if (game.physics.arcade.distanceBetween(player, knight) < 70) {
-    growl.play()
+    growl.play('', 0, 1, false, false)
     knight.animations.add('enemy_death', [14,15], 10)
     knight.animations.play('enemy_death', 10, false, true)
     score += 10;
@@ -227,18 +229,39 @@ function killBoss() {
     boss.animations.play('boss_death', 10, false, true)
     score += 10;
     scoreText.text = 'Score: ' + score;
-    var winText = this.game.add.text(game.camera.width / 2, game.camera.height / 2, "Score: 0", {
+      music.stop()
+    win.play('', 0 , 1 , false, false)
+    var winText = game.add.text(game.camera.width / 2, game.camera.height / 2, "Score: 0", {
         font: "48px Arial",
         fill: "#ff0044",
         align: "left"
     });
     winText.fixedToCamera = true;
     winText.setText("YOU WIN");
-      music.stop()
-    win.play('', 0 , 1 , false, false)
+    timeCheck = game.time.now;
+
 
     }
 }
+
+
+  function die(player, knight) {
+  player.kill()
+  music.stop()
+  lose = game.add.audio('lose')
+  lose.play()
+
+  
+   var dieText = this.game.add.text(game.camera.width / 2, game.camera.height / 2, "Score: 0", {
+        font: "48px Arial",
+        fill: "#ff0044",
+        align: "left"
+    });
+    dieText.fixedToCamera = true;
+    dieText.setText("YOU DIED");
+    timeCheck = game.time.now;
+    
+  }  
 function update() {
 
     //  Collide the player and the stars with the platforms
@@ -256,6 +279,12 @@ function update() {
     game.camera.follow(player)
     scoreText.x = game.camera.x;
     scoreText.y = game.camera.y;
+
+    if (game.time.now - timeCheck > 4500) {
+
+    sendScore(score)
+    game.destroy();
+}
 
     knights.forEach(function(knight) {
 
@@ -306,9 +335,10 @@ function update() {
     }
     else if (cursors.down.isDown)  {
       player.animations.play('attack')
+      smash.play('', 0, 1, false, false)
       kill()
       killBoss()
-      smash.play('', 0, 1, false, false)
+
     }
     else
     {
@@ -318,22 +348,6 @@ function update() {
 
 
 
-  function die(player, knight) {
-  player.kill()
-  music.stop()
-  lose = game.add.audio('lose')
-  lose.play()
-
-  
-   var dieText = this.game.add.text(game.camera.width / 2, game.camera.height / 2, "Score: 0", {
-        font: "48px Arial",
-        fill: "#ff0044",
-        align: "left"
-    });
-    dieText.fixedToCamera = true;
-    dieText.setText("YOU DIED");
-    
-  }  
     //  Allow the player to jump if they are touching the ground.
     if (cursors.up.isDown && player.body.onFloor())
     {
@@ -345,11 +359,15 @@ function update() {
 
     // Removes the star from the screen
     star.kill();
+    pickup = game.add.audio('pickup');
+    pickup.play();
     //  Add and update the score
     score += 10;
     scoreText.text = 'Score: ' + score;
 
-}
+
+
+  }
     
 
 
@@ -357,7 +375,7 @@ function update() {
 
 
 
-
+}
 
 
 

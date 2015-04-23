@@ -1,15 +1,94 @@
-Game.MainMenu = function(game){};
-Game.MainMenu.prototype = {
-  create: function(){
-    // display images
-    this.add.sprite(0, 0, 'background');
-    this.add.sprite(-130, Game.GAME_HEIGHT-514, 'monster-cover');
-    this.add.sprite((Game.GAME_WIDTH-395)/2, 60, 'title');
-    // add the button that will start the game
-    this.add.button(Game.GAME_WIDTH-401-10, Game.GAME_HEIGHT-143-10, 'button-start', this.startGame, this, 1, 0, 2);
-  },
-  startGame: function() {
-    // start the Game state
-    this.state.start('Game');
-  }
+$(function(){
+    
+    loginTemplate = Handlebars.compile($('#login-template').html());
+  userTemplate = Handlebars.compile($('#user-template').html());
+  createUserTemplate = Handlebars.compile($('#create-user-template').html());
+    $("#start").on("click", startGame);
+  $('body').on('click', '#create-button', createUser);
+  $('body').on('click', '#login-button', login);
+   $('body').on('click', '#logout-button', logout);
+    
+    renderStart()
+});
+
+function renderStart() {
+    $('#user-accounts').empty();
+    $('#user-access').empty();
+    $('#user-access').append(loginTemplate);
+    $('#user-access').append(createUserTemplate);
+};
+
+function createUser() {
+  console.log("clicked")
+  var username = $('#create-username').val();
+  var password = $('#create-password').val();
+  $.post('/users', {
+    username: username,
+    password: password
+  })
+  .done(function() {
+          alert('Success!');
+          $('#create-username').val('');
+          $('#create-password').val('');
+  })
+  .fail(function() {
+          alert('Fail!');
+  });
+};
+
+function login() {
+  var username = $('#login-username').val();
+  var password = $('#login-password').val();
+
+  $.post('/sessions', {
+    username: username,
+    password: password
+  })
+  .done(renderUserAccounts)
+  .fail(function(response) {
+    var err = response.responseJSON;
+    alert(err.err + ' - ' + err.msg);
+  });
+};
+
+
+
+function renderUserAccounts(user) {
+    var userId;
+    isNaN(user) ? userId = user.id : userId = user;
+    $.get('/users/' + userId)
+        .done(function (fullUser) {
+            $('#user-access').html(userTemplate(fullUser));
+            $('#user-accounts').empty();
+            fullUser.accounts.forEach(function(account) {
+                $('#user-accounts').append(accountTemplate(account));
+            });
+        });
+};
+
+function logout() {
+    $.ajax({
+        method: 'DELETE',
+        url: '/sessions'
+    })
+    .done(renderStart);
+};
+
+function sendScore(score){
+    var userId = $('#current-user').attr('data-userId');
+    var current = $("#current-user").attr("data-highscore");
+    if(score >= current){
+        $.ajax({
+            method: "PUT",
+            url:"/users/" + userId,
+            data: {
+                high_score: score
+            }
+        });
+    };
+    // var scores = $("<div>")
+    // scores.html("your score is " + score)
+    // var died =  $("<div>").html("you died")
+    // $("body").append(died)
+    // $("body").append(scores);
 };

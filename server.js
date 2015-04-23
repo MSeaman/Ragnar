@@ -114,6 +114,6 @@ app.delete('/users/:id', restrictAccess, function(req, res) {
     });
 });
 
-app.listen(3000, function() {
-  console.log('Server listening on 3000...');
+app.listen(process.env.PORT || 3000, function() {
+  console.log('Server running on 3000...');
 });

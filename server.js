@@ -61,7 +61,7 @@ app.delete('/sessions', function(req, res) {
 });
 
 app.get('/current_user', function(req, res) {
-  if (req.session.currentUser) res.send(req.session.currentUser)
+  /*if (req.session.currentUser)*/  res.send(req.session.currentUser)
 });
 
 app.post('/users', function(req, res) {
@@ -86,20 +86,19 @@ app.get('/users/:id', restrictAccess, function(req, res) {
     });
 });
 
-app.put('/users/:id', function(req, res) {
+app.put('/users/:id', function(req, res){
     User
-      .findOne(req.params.id)
-      .then(function(user) {
+    .findOne(req.params.id)
+    .then(function(user){
         user
-          .update({
+        .update({
             high_score: req.body.high_score
-          })
-          .then(function(updatedUser) {
-            res.send(updatedUser);
-          });
-      })
-  
-});
+        })
+        .then(function(user){
+            res.send(user);
+        });
+    });
+}); 
 
 app.delete('/users/:id', restrictAccess, function(req, res) {
   User

@@ -12,11 +12,33 @@ $(function(){
 });
 
 function renderStart() {
+    var Currentuser = $.ajax({
+        url:"/current_user",
+        method: "GET"
+    }).done(function(Obj){
+        if(!Obj.currentUser){
     $('#user-accounts').empty();
     $('#user-access').empty();
     $('#user-access').append(loginTemplate);
     $('#user-access').append(createUserTemplate);
-};
+        } else{
+     var currentId = Obj.currentUser
+     var user = $.ajax({
+         url: "/users/" + currentId,
+         method: "GET"
+     }).done(function(user){
+    if(!Currentuser.id){
+        renderUserAccounts(user)
+    } else {
+    $('#user-accounts').empty();
+    $('#user-access').empty();
+    $('#user-access').append(loginTemplate);
+    $('#user-access').append(createUserTemplate);
+        };
+    });
+ }
+});
+} 
 
 function createUser() {
   console.log("clicked")
@@ -76,7 +98,7 @@ function logout() {
 
 function sendScore(score){
     var userId = $('#current-user').attr('data-userId');
-    var current = $("#current-user").attr("data-highscore");
+    var current = $("#current-user").attr("data-high");
     if(score >= current){
         $.ajax({
             method: "PUT",

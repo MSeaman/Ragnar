@@ -10,7 +10,7 @@ function preload() {
     game.load.audio('pickup', 'assets/Pickup_Gold.mp3')
     game.load.audio('background', 'assets/waterworks.ogg')
     game.load.audio('walking', 'assets/footsteps/Footstep_Dirt_00.mp3' )
-    game.load.audio('deathGrowl', 'assets/cut_grunt2.wav')
+    game.load.audio('deathGrowl', 'assets/deathe.wav')
     game.load.audio('jump', 'assets/jump.mp3')
     game.load.audio('smash', 'assets/smash.mp3')
     game.load.image('jungle', 'assets/jungle_background.png', 1024, 600);
@@ -62,13 +62,14 @@ function create() {
     collisionLayer.resizeWorld()
     
     // The player and its settings
-    player = game.add.sprite(60, game.world.height - 200, 'dude');
+    player = game.add.sprite(100, 300, 'dude');
 
     //  We need to enable physics on the player
     game.physics.arcade.enable(player);
     player.enableBody = true;
     // game.camera.follow(player)
     player.body.setSize(60,50,0,0)
+    player.anchor.setTo(.5,1)
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.body.bounce.y = 0.2;

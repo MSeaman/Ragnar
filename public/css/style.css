@@ -16,6 +16,16 @@ h1{
   color: red;
   font-family: viking;
 }
+h2 {
+  font-size: 20px;
+  text-align: center;
+  color: red;
+}
+h3 {
+  font-size: 20px;
+  text-align: center;
+  color:red;
+}
 
 p {
   color:red;

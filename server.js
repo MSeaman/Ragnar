@@ -61,7 +61,7 @@ app.delete('/sessions', function(req, res) {
 });
 
 app.get('/current_user', function(req, res) {
-  if (req.session.currentUser) res.send(req.session.currentUser)
+  /* if (req.session.currentUser)*/ res.send(req.session.currentUser)
 });
 
 app.post('/users', function(req, res) {

@@ -15,7 +15,7 @@ app.use( logger('dev') );
 app.use( bodyParser.urlencoded({ extended: false }) );
 app.use( bodyParser.json() );
 app.use( express.static('./public' ));
-// app.use( express.static( path.join( application_root, 'browser' )));
+app.use( express.static( path.join( application_root, 'browser' )));
 
 app.use(session({
   secret: 'gamesecret',
@@ -61,7 +61,7 @@ app.delete('/sessions', function(req, res) {
 });
 
 app.get('/current_user', function(req, res) {
-  /*if (req.session.currentUser)*/  res.send(req.session.currentUser)
+  if (req.session.currentUser) res.send(req.session.currentUser)
 });
 
 app.post('/users', function(req, res) {

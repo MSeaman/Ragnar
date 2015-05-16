@@ -23,7 +23,7 @@ function preload() {
     game.load.spritesheet('boss', 'assets/dwarves.png', 100, 80)
     game.load.spritesheet('explosion', 'assets/explosion.png')
 
-game.load.spritesheet('', '')
+// game.load.spritesheet('', '')
 }
 
 var pickup;

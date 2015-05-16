@@ -7,7 +7,7 @@ function preload() {
 
     game.load.audio('lose', 'assets/lose.mp3')
     game.load.audio('win', 'assets/win.mp3')
-    game.load.audio('pickup', 'assets/Pickup_Gold.mp3')
+    game.load.audio('pickup', 'assets/pickup_gold.mp3')
     game.load.audio('background', 'assets/waterworks.ogg')
     game.load.audio('walking', 'assets/footsteps/Footstep_Dirt_00.mp3' )
     game.load.audio('deathGrowl', 'assets/deathe.wav')

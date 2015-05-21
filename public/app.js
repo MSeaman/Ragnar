@@ -100,7 +100,6 @@ function create() {
     boss.animations.play('boss_walk')
     boss.body.velocity.x =5
 
-    lose = game.add.audio('lose');    
     smash = game.add.audio('smash')
     win = game.add.audio('win');
     growl = game.add.audio('deathGrowl')
@@ -251,7 +250,8 @@ function killBoss() {
   function die(player, knight) {
   player.kill();
   music.stop();
-  lose.play('', 0, 1, false, false);
+  lose = game.add.audio('lose');    
+  lose.play();
 
   
    var dieText = this.game.add.text(game.camera.width / 2, game.camera.height / 2, "Score: 0", {

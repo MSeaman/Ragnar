@@ -50,9 +50,8 @@ var timeCheck;
 
 function create() {
 
-    music = game.add.audio('background')
-    music.play();
-    music.loop = true;
+    // music.play();
+    // music.loop = true;
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.add.tileSprite(0,0,6024,600, 'jungle')
@@ -100,8 +99,12 @@ function create() {
     boss.animations.play('boss_walk')
     boss.body.velocity.x =5
 
+    music = game.add.audio('background');
+    music.play();
+    music.loop = true;
     smash = game.add.audio('smash')
     win = game.add.audio('win');
+    lose = game.add.audio('lose');
     growl = game.add.audio('deathGrowl')
     timer = game.time.create(true);
 
@@ -248,10 +251,9 @@ function killBoss() {
 
 
   function die(player, knight) {
-  player.kill()
-  music.stop()
-  lose = game.add.audio('lose')
-  lose.play()
+  player.kill();
+  music.stop();
+  lose.play();
 
   
    var dieText = this.game.add.text(game.camera.width / 2, game.camera.height / 2, "Score: 0", {

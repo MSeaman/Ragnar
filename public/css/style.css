@@ -31,3 +31,22 @@ p {
   color:red;
   font-size: 20px;
 }
+input{
+  background-color: cornflowerblue;
+  font-size: 10px;
+  border: solid grey;
+  color: white;
+}
+
+div{
+  margin: 0;
+  height: 50px;
+  font-size: 100px;
+  color: whitesmoke;
+  font-family: Copperplate;
+  margin: 0;
+}
+
+#user-access{
+  margin: 0;
+}

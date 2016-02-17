@@ -13,24 +13,20 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  
+  <h1>Ragnar the Dwarf</h1>
+  <h2>Travel Across the jungle as Ragnar the Dwarf. Kill the big dwarf at the end to win. Watch out for his minions!</h2>
+  <h3>Controls: Press left or right to move. Up to jump and down to attack.</h3>
+  <div id='user-access'></div>
+  <div id='user-accounts'></div>
+  <button id="start">Start Game</button>
+    
   <div id='container'>
-    <header>
-
-<h1>Ragnar the Dwarf</h1>
-<h2>Travel Across the jungle as Ragnar the Dwarf. Kill the big dwarf at the end to win. Watch out for his minions!</h2>
-<h3>Controls: Press left or right to move. Up to jump and down to attack.</h3>
-    </header>
-
-    <div id='user-access'></div>
-    <div id='user-accounts'></div>
-
-    <button id="start">Start Game</button>
     <template id="create-user-template">
       <input type="text" id="create-username" placeholder="username">
       <input type="password" id="create-password" placeholder="password">
       <button id="create-button">Sign Up</button>
     </template>
-
 
     <template id="login-template">
       <input type="text" id="login-username" placeholder="username">
@@ -38,9 +34,9 @@
       <button id="login-button">Log In</button>
     </template>
 
-    <template id="user-template">
-        <p id="current-user" data-userId={{id}} data-username={{username}} data-highscore{{high_score}}>    {{username}} <br>
-         Highescore: {{high_score}}</p>
+     <template id="user-template">
+        <p id="current-user" data-userid={{id}} data-high={{high_score}} data-username={{username}}>
+          player:   {{username}}<br> Highscore: {{high_score}}</p>
         <button id="logout-button">Logout</button>
         <button id="delete-button">Delete Profile</button>
     </template>

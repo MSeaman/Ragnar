@@ -1,4 +1,5 @@
 startGame = function() {
+$('#container').empty()    
 console.log('loaded')
 var game = new Phaser.Game(1024, 500, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var map;
@@ -61,6 +62,11 @@ function create() {
     collisionLayer = map.createLayer('collision_layer');
     map.setCollisionBetween(0, 100000, true, collisionLayer);
     collisionLayer.resizeWorld()
+
+    var up = game.input.keyboard.addKey(Phaser.Keyboard.W);
+    var down = game.input.keyboard.addKey(Phaser.Keyboard.S)
+    var left = game.input.keyboard.addKey(Phaser.Keyboard.A)
+    var right = game.input.keyboard.addKey(Phaser.Keyboard.D)
     
     // The player and its settings
     player = game.add.sprite(100, 300, 'dude');
@@ -261,6 +267,7 @@ function killBoss() {
     });
     dieText.fixedToCamera = true;
     dieText.setText("YOU DIED");
+    sendScore(score)
     timeCheck = game.time.now;
     
   }  
@@ -284,9 +291,11 @@ function update() {
 
     if (game.time.now - timeCheck > 4500) {
 
-    sendScore(score)
     game.destroy();
-}
+    }
+    if (boss.alive = false) {
+        sendWinScore(score)
+    }
 
     knights.forEach(function(knight) {
 
@@ -309,7 +318,8 @@ function update() {
        } 
     })
 
-    if (cursors.left.isDown)
+    // if (cursors.left.isDown)
+    if (game.input.keyboard.isDown(Phaser.Keyboard.A))
     {
         //  Move to the left
         player.body.velocity.x = -150;
@@ -321,7 +331,9 @@ function update() {
 
         facing = 'left'
     }
-    else if (cursors.right.isDown)
+    // else if (cursors.right.isDown)
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
+
     {
         //  Move to the right
         player.body.velocity.x = 150;
@@ -332,10 +344,16 @@ function update() {
         // walking.play();
         facing = 'right';
     }
-    else if (cursors.up.isDown) {
+    // else if (cursors.up.isDown) 
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.W))
+
+    {
       player.animations.play('jump');
     }
-    else if (cursors.down.isDown)  {
+    // else if (cursors.down.isDown) 
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.S))
+
+    {
       player.animations.play('attack')
       smash.play('', 0, 1, false, false)
       kill()
@@ -351,7 +369,7 @@ function update() {
 
 
     //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && player.body.onFloor())
+    if (game.input.keyboard.isDown(Phaser.Keyboard.W) && player.body.onFloor())
     {
         player.body.velocity.y = -350;
         jump = game.add.audio('jump', 1)
